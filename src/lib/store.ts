@@ -9,7 +9,7 @@ interface Country {
 
 export const useFilter = create<Country>((set) => ({
   filterBySearch: '',
-  filterByRegion: '',
+  filterByRegion: 'All',
   setFilterBySearch: (search: string) => set({filterBySearch: search}),
   setFilterByRegion: (region: string) => set({filterByRegion: region}),
 }));
