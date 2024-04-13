@@ -4,6 +4,7 @@ import { useFilter } from "@/lib/store";
 import { motion } from "framer-motion";
 import { HeartIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { putCountryIntoDatabase } from "@/server/Actions";
 
 export const CountryList = ({ country }: any) => {
   const router = useRouter();
@@ -24,8 +25,11 @@ export const CountryList = ({ country }: any) => {
     .sort((a: any, b: any) => b.population - a.population); // Sort by population
 
 
-  const addToFavorite = (e: any) => {
+  const addToFavorite = (e: any, cca2: string) => {
     e.stopPropagation();
+    const country = filteredCountries.find((country: any) => country.cca2 === cca2);
+    
+    putCountryIntoDatabase(country.name.common, country.capital[0], country.region, country.subregion, country.population, country.flags.png, country.cca2)
   }
 
   return (
@@ -42,7 +46,9 @@ export const CountryList = ({ country }: any) => {
             className="h-48 relative">
             <div className="absolute top-2 right-2">
               <HeartIcon className="cursor-pointer fill-yellow-500 text-slate-800"
-              size={32} onClick={addToFavorite} />
+              size={32}
+              onClick={(e) => addToFavorite(e, country.cca2)}
+              />
             </div>
             <img src={country.flags.png} alt={country.name.common} className="w-full h-full object-cover" />
           </motion.div>
